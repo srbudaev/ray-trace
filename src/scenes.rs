@@ -1,7 +1,7 @@
 use std::rc::Rc;
 use crate::core::{HittableList, Color, common};
-use crate::core::material::{Material, NumberType, LambertianNoise, Metal, Striped};
-use crate::shapes::{Sphere, Plane};
+use crate::core::material::{Material, NumberType, LambertianNoise, Metal, Striped, Lambertian};
+use crate::shapes::{Sphere, Plane, Cylinder, Cuboid};
 use crate::math::vec3::{Point3, Vec3};
 
 pub fn random_scene() -> HittableList {
@@ -59,5 +59,100 @@ pub fn random_scene() -> HittableList {
         }
     }
     world
+}
+
+// ========== AUDIT SCENES ==========
+
+/// Scene 1: Only a sphere
+pub fn scene_sphere() -> HittableList {
+    let mut world = HittableList::new();
+
+    // Ground plane
+    let ground_material = Rc::new(Lambertian::new(Color::new(0.5, 0.5, 0.5)));
+    world.add(Box::new(Plane::new(
+        Point3::new(0.0, 0.0, 0.0),
+        Vec3::new(0.0, 1.0, 0.0),
+        ground_material,
+    )));
+
+    // Single sphere
+    let sphere_material = Rc::new(Lambertian::new(Color::new(0.7, 0.3, 0.3))); // Red sphere
+    world.add(Box::new(Sphere::new(
+        Point3::new(0.0, 1.0, 0.0),  // Center above ground
+        0.5,                          // Radius
+        sphere_material,
+    )));
+
+    world
+}
+
+/// Scene 2: Plane + Cube with lower brightness (brightness controlled in main.rs)
+pub fn scene_plane_cube() -> HittableList {
+    let mut world = HittableList::new();
+
+    // Ground plane
+    let ground_material = Rc::new(Lambertian::new(Color::new(0.5, 0.5, 0.5)));
+    world.add(Box::new(Plane::new(
+        Point3::new(0.0, 0.0, 0.0),
+        Vec3::new(0.0, 1.0, 0.0),
+        ground_material,
+    )));
+
+    // Cube
+    let cube_material = Rc::new(Lambertian::new(Color::new(0.4, 0.6, 0.8))); // Blue cube
+    world.add(Box::new(Cuboid::new(
+        Point3::new(-0.5, 0.0, -0.5),  // Min corner
+        Point3::new(0.5, 1.0, 0.5),    // Max corner
+        cube_material,
+    )));
+
+    world
+}
+
+/// Scene 3: All objects (sphere, cube, cylinder, plane)
+pub fn scene_all_objects() -> HittableList {
+    let mut world = HittableList::new();
+
+    // Ground plane
+    let ground_material = Rc::new(Lambertian::new(Color::new(0.5, 0.5, 0.5)));
+    world.add(Box::new(Plane::new(
+        Point3::new(0.0, 0.0, 0.0),
+        Vec3::new(0.0, 1.0, 0.0),
+        ground_material,
+    )));
+
+    // Sphere - слева, ближе к камере
+    let sphere_material = Rc::new(Lambertian::new(Color::new(0.8, 0.2, 0.2))); // Red
+    world.add(Box::new(Sphere::new(
+        Point3::new(-1.5, 0.6, 0.0),  // Выше и ближе
+        0.6,                           // Больше размер
+        sphere_material,
+    )));
+
+    // Cube - в центре
+    let cube_material = Rc::new(Lambertian::new(Color::new(0.2, 0.2, 0.8))); // Blue
+    world.add(Box::new(Cuboid::new(
+        Point3::new(-0.6, 0.0, -0.6),  // Центр смещен немного назад
+        Point3::new(0.6, 1.2, 0.6),    // Выше куб
+        cube_material,
+    )));
+
+    // Cylinder - справа, дальше
+    let cylinder_material = Rc::new(Lambertian::new(Color::new(0.2, 0.8, 0.2))); // Green
+    world.add(Box::new(Cylinder::new(
+        Point3::new(1.5, 0.0, 0.0),    // Справа
+        Vec3::new(0.0, 1.0, 0.0),
+        0.6,                            // Больше радиус
+        1.8,                            // Выше
+        cylinder_material,
+    )));
+
+    world
+}
+
+/// Scene 4: Same as scene 3, but camera position will be different (handled in main.rs)
+pub fn scene_all_objects_alt_camera() -> HittableList {
+    // Same scene as scene_all_objects, camera position differs in main.rs
+    scene_all_objects()
 }
 

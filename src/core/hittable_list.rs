@@ -10,9 +10,14 @@ impl HittableList {
     pub fn new() -> HittableList {
         Default::default()
     }
- 
+
     pub fn add(&mut self, object: Box<dyn Hittable>) {
         self.objects.push(object);
+    }
+
+    /// Get the number of objects in the list
+    pub fn len(&self) -> usize {
+        self.objects.len()
     }
 }
  

@@ -1,9 +1,9 @@
 use std::io::Write;
-use crate::core::color::Color;
+use crate::core::Color;
 use crate::core::common;
 
 pub fn write_color(out: &mut impl Write, pixel_color: Color, samples_per_pixel: i32) {
-    let mut r = pixel_color.x();
+    let mut r: f64 = pixel_color.x();
     let mut g = pixel_color.y();
     let mut b = pixel_color.z();
 

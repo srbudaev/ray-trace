@@ -1,5 +1,5 @@
 use crate::math::vec3;
-use super::color::Color;
+use super::Color;
 use crate::math::vec3::Vec3;
 use crate::math::vec3::Point3;
 

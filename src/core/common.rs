@@ -2,7 +2,7 @@ use rand::Rng;
  
 // Constants
 
-use super::color::Color;
+use super::Color;
 pub use std::f64::consts::PI;
 pub use std::f64::INFINITY;
  

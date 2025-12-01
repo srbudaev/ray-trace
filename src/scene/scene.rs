@@ -32,8 +32,8 @@ impl RenderSettings {
         Self {
             width: 800,
             height: 600,
-            samples_per_pixel: 200,
-            max_depth: 100,
+            samples_per_pixel: 32,
+            max_depth: 10,
         }
     }
 

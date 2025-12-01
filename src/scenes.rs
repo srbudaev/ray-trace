@@ -117,7 +117,7 @@ pub fn scene_sphere() -> Scene {
     scene.add_light(crate::core::PointLight::new(
         Point3::new(0.0, 5.0, 4.0),
         Color::new(1.0, 0.85, 0.6),
-        0.75,
+        1.75,
     ));
 
     scene
@@ -156,8 +156,8 @@ pub fn scene_plane_cube() -> Scene {
     // Add light with lower brightness for scene 2
     scene.add_light(crate::core::PointLight::new(
         Point3::new(0.0, 5.0, 4.0),
-        Color::new(1.0, 0.85, 0.6),
-        0.3,  // Lower brightness
+        Color::new(2.0, 1.85, 1.6),
+        0.2,  // Lower brightness
     ));
 
     scene

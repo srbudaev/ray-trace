@@ -219,17 +219,8 @@ scene.set_camera(
 The ray tracer outputs images in PPM (Portable Pixmap) format. To convert to other formats:
 
 ```bash
-# Convert to PNG using ImageMagick
-convert output.ppm output.png
-
-# Convert to JPEG
-convert output.ppm output.jpg
-
 # View directly (macOS)
 open output.ppm
-
-# View directly (Linux)
-xdg-open output.ppm
 ```
 
 ## Performance Tips

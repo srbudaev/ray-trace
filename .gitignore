@@ -3,7 +3,7 @@
 
 # Generated output files (rendered images)
 /output
-*.ppm
+
 
 # macOS system files
 .DS_Store

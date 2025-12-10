@@ -1,7 +1,7 @@
 use crate::core::{Color, Hittable, HitRecord, PointLight, common};
 use crate::math::ray::Ray;
 
-pub fn ray_color(r: &Ray, world: &dyn Hittable, lights: &[PointLight], depth: i32) -> Color {
+pub fn ray_color(r: &Ray, world: &dyn Hittable, lights: &[PointLight], depth: i32, bg_color: Color) -> Color {
     // If we've exceeded the ray bounce limit, no more light is gathered
     if depth <= 0 {
         return Color::new(0.0, 0.0, 0.0);
@@ -16,7 +16,7 @@ pub fn ray_color(r: &Ray, world: &dyn Hittable, lights: &[PointLight], depth: i3
         let mut scattered = Ray::default();
         let indirect_light = if let Some(mat) = &rec.mat {
             if mat.scatter(r, &rec, &mut attenuation, &mut scattered) {
-                attenuation * ray_color(&scattered, world, lights, depth - 1)
+                attenuation * ray_color(&scattered, world, lights, depth - 1, bg_color)
             } else {
                 Color::new(0.0, 0.0, 0.0)
             }
@@ -56,9 +56,7 @@ pub fn ray_color(r: &Ray, world: &dyn Hittable, lights: &[PointLight], depth: i3
         return indirect_light + direct_light;
     }
 
-    //Background gradient
-    let unit_direction = r.direction().unit_vector();
-    let t = 0.5 * (unit_direction.y() + 1.0);
-    (1.0 - t) * Color::new(1.0, 1.0, 1.0) + t * Color::new(0.5, 0.7, 1.0)
+    // Background color
+    bg_color
 }
 

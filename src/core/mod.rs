@@ -12,5 +12,5 @@ pub use light::{PointLight, compute_light};
 pub use hittable::{HitRecord, Hittable};
 pub use hittable_list::HittableList;
 pub use common::*;
-pub use material::{Material, NumberType, Lambertian, Metal, LambertianNoise, Striped};
+pub use material::{Material, NumberType, Lambertian, Solid, LambertianNoise, Striped, Dielectric, FrostedGlass, Translucent};
 

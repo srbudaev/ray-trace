@@ -8,7 +8,7 @@ pub mod ppm;
 
 pub use math::{Vec3, Point3, Ray};
 pub use core::{Color, Camera, PointLight, Hittable, HitRecord, HittableList};
-pub use core::{Lambertian, Metal, LambertianNoise, Striped, Material};
+pub use core::{Lambertian, Solid, LambertianNoise, Striped, Dielectric, FrostedGlass, Translucent, Material};
 pub use shapes::{Sphere, Plane, Cuboid, Cylinder};
 pub use scene::render::ray_color;
 pub use scene::{Scene, RenderSettings};

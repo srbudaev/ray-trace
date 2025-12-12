@@ -69,6 +69,13 @@ pub fn random_scene() -> Scene {
         Color::new(1.0, 0.85, 0.6),
         0.75,
     ));
+
+        // Add light
+    scene.add_light(crate::core::PointLight::new(
+        Point3::new(0.0, 1.0, 1.0),
+        Color::new(1.0, 0.85, 0.6),
+        0.75,
+    ));
     
         // Add light
     scene.add_light(crate::core::PointLight::new(
@@ -245,7 +252,7 @@ pub fn scene_custom_with_params(
     let mut scene = Scene::new();
 
     // Ground plane
-    let ground_material = Rc::new(Lambertian::new(Color::new(0.4, 0.5, 0.1)));
+    let ground_material = Rc::new(Lambertian::new(Color::new(0.29, 0.18, 0.11)));
     scene.add_object(Box::new(Plane::new(
         Point3::new(0.0, 0.0, 0.0),
         Vec3::new(0.0, 1.0, 0.0),
@@ -298,7 +305,7 @@ pub fn scene_custom_with_params(
     // Add lights
     scene.add_light(crate::core::PointLight::new(
         Point3::new(0.0, 5.0, 4.0),
-        Color::new(1.0, 0.85, 0.6),
+        Color::new(1.0, 0.85, 0.2),
         0.75,
     ));
 

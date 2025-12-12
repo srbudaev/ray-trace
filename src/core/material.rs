@@ -434,10 +434,10 @@ impl Material for Dielectric {
         // Apply glass color as tint
         *attenuation = self.albedo;
         
-        // Mix between transmission (98%) and diffuse scattering (2%)
-        // Very high transmission so light passes through and shadow is minimal
-        // Just a tiny bit of scatter to make the surface slightly visible
-        if common::random_double() < 0.98 {
+        // Mix between transmission (99.5%) and diffuse scattering (0.5%)
+        // Almost complete transmission so shadows are very soft
+        // Minimal scatter just to make the surface barely visible
+        if common::random_double() < 0.995 {
             // Transmission: pass ray straight through
             *scattered = Ray::new(rec.p, r_in.direction());
         } else {
@@ -543,19 +543,19 @@ impl Material for Translucent {
         attenuation: &mut Color,
         scattered: &mut Ray,
     ) -> bool {
+        // Strong glow effect - let colors go over 1.0 for bloom effect
+        let glow_boost = 1.45;
+        *attenuation = self.albedo * glow_boost;
+        
+        // Use opacity more directly: higher value = more opaque/solid
         // Mix between diffuse scattering and straight-through transmission
         if common::random_double() < self.opacity {
             // Diffuse scatter (matte surface reflection)
-            *attenuation = self.albedo;
             let scatter_direction = rec.normal + vec3::random_unit_vector();
             *scattered = Ray::new(rec.p, scatter_direction);
         } else {
-            // Transmit through with volume absorption like colored liquid
-            // Apply color directly - accumulates with depth like real liquid
-            *attenuation = self.albedo;
-            
-            // Add subtle internal scattering for liquid-like appearance
-            let scatter_amount = 0.02 * self.opacity; // More scattering when more opaque
+            // Transmit through - mostly straight through for soft shadows
+            let scatter_amount = 0.01 * self.opacity; // Less scattering
             let through_direction = r_in.direction() + vec3::random_in_unit_sphere() * scatter_amount;
             *scattered = Ray::new(rec.p, through_direction.unit_vector());
         }

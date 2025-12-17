@@ -415,12 +415,6 @@ impl Dielectric {
     pub fn new(index_of_refraction: f64, albedo: Color) -> Dielectric {
         Dielectric { ir: index_of_refraction, albedo }
     }
-
-    fn reflectance(cosine: f64, ref_idx: f64) -> f64 {
-        // Use Schlick's approximation for reflectance
-        let r0 = ((1.0 - ref_idx) / (1.0 + ref_idx)).powi(2);
-        r0 + (1.0 - r0) * (1.0 - cosine).powi(5)
-    }
 }
 
 impl Material for Dielectric {

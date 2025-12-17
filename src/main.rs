@@ -1,5 +1,5 @@
 use ray_trace::*;
-use ray_trace::scenes::{random_scene, scene_sphere, scene_plane_cube, scene_all_objects, scene_all_objects_alt_camera, scene_custom_with_params};
+use ray_trace::scenes::{random_scene, scene_sphere, scene_plane_cube, scene_all_objects, scene_all_objects_alt_camera};
 
 fn main() {
     // Get configuration from command-line arguments
@@ -12,7 +12,6 @@ fn main() {
         2 => scene_plane_cube(),
         3 => scene_all_objects(),
         4 => scene_all_objects_alt_camera(),
-        5 => scene_custom_with_params(&config.spheres, config.camera_pos, config.camera_lookat),
         _ => {
             eprintln!("Unknown scene number: {}. Using default scene 0.", config.scene);
             random_scene()

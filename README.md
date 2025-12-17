@@ -628,16 +628,16 @@ open output.ppm
 ## example scenes:
 
 ## random_scene with warm light
-cargo run --release -- --scene 0 --bg 0.6,0.26,0.07 --width 800 --height 600
+cargo run --release -- --scene 0 --bg "0.6 0.26 0.07" --width 800 --height 600
 
-daylight: 
-cargo run --release -- --scene 0 --bg 0.9,0.9,1.0 --width 800 --height 600
+daylight:
+cargo run --release -- --scene 0 --bg "0.9 0.9 1.0" --width 800 --height 600
 
 ## scene_01
 light:
-cargo run --release -- --scene 1 --bg 0.9,0.9,0.9 --width 800 --height 600
+cargo run --release -- --scene 1 --bg "0.9 0.9 0.9" --width 800 --height 600
 darker:
-cargo run --release -- --scene 1 --bg 0.1,0.1,0.1 --width 800 --height 600
+cargo run --release -- --scene 1 --bg "0.1 0.1 0.1" --width 800 --height 600
 
 ## scene_02
 
@@ -645,40 +645,16 @@ lighter:
 cargo run --release -- --scene 2 --width 800 --height 600 // default background: light blue
 
 darker:
-cargo run --release -- --scene 2 --bg 0.1,0.1,0.2 --width 800 --height 600   
+cargo run --release -- --scene 2 --bg "0.1 0.1 0.2" --width 800 --height 600
 
 ## scene_03
 lighter:
 cargo run --release -- --scene 3 --width 800 --height 600 // default background: light blue
 
 darker:
-cargo run --release -- --scene 3 --bg 0.1,0.1,0.2 --width 800 --height 600
+cargo run --release -- --scene 3 --bg "0.1 0.1 0.2" --width 800 --height 600
 
 ## scene_04 
 
-cargo run --release -- --scene 4 --bg 0.1,0.1,0.2 --width 800 --height 600
+cargo run --release -- --scene 4 --bg "0.1 0.1 0.2" --width 800 --height 600
 
-## bouncy balls:
-`target/release/ray-trace --scene 5 --sphere '0 0.5 -3 0.5 color: 1.0 0.42 0.0 matte: 0.15' --output bouncy_ball.ppm --sphere '1.5 1 -3 0.5 color: 1.0 0.01 0.48 matte: 0.5' --sphere '0 0.5 -4 0.5 color: 0 0.52 1 matte: 0.15' --sphere '0 1.2 2 0.5 color: 1.0 0.9 0.05 matte: 0.45'`
-Rendering scene to bouncy_ball.ppm...
-
-cargo run --release -- --scene 5 \
---sphere "0 1.2 -2.5 0.5 color: 1.0 0.40 0.0 matte: 0.8" \
---sphere "1.5 1 -3 0.5 color: 1.0 0.01 0.48 matte: 0.8" \
---sphere "0 0.5 -4 0.5 color: 0.5 0.10 0.9 matte: 0.8" \
---sphere "0 1.2 2 0.5 color: 0.95 0.85 0.1 matte: 0.8" \
---sphere "0 1.9 1 0.5 color: 0.05 0.85 0.1 matte: 0.8" \
---sphere "1 0.5 1.0 0.5 color: 0.05 0.15 1.0 matte: 0.8" \
---sphere "1.5 3.1 -3 0.5 color: 1.0 0.40 0.0 matte: 0.8" \
---sphere "2.5 2.2 -3 0.5 color: 1.0 0.01 0.48 matte: 0.8" \
---sphere "2 2.5 -4 0.5 color: 0.5 0.10 0.9 matte: 0.8" \
---sphere "1.5 0.7 2 0.5 color: 0.95 0.85 0.1 matte: 0.8" \
---sphere "1 2.9 1 0.5 color: 0.05 0.85 0.1 matte: 0.8" \
---sphere "2 1.5 1.0 0.5 color: 0.05 0.15 1.0 matte: 0.8" \
---sphere "2.5 2.0 -3 0.5 color: 1.0 0.01 0.48 matte: 0.8" \
---sphere "2 0.5 -4 0.5 color: 0.5 0.10 0.9 matte: 0.8" \
---sphere "3.5 0.7 -2 0.5 color: 0.95 0.85 0.1 matte: 0.8" \
---sphere "2 3.2 3 0.5 color: 0.05 0.85 0.1 matte: 0.8" \
---bg "0.20 0.60 1" \
---width 400 --height 300 \
---output bouncy_ball.ppm

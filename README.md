@@ -79,7 +79,8 @@ cargo run --release -- [OPTIONS]⬇️
 | `--samples <NUMBER>` |       | Samples per pixel (quality)       | 200        |
 | `--depth <NUMBER>`   |       | Maximum ray bounce depth          | 100        |
 | `--output <FILE>`    | `-o`  | Output filename                   | output.ppm |
-| `--frames <NUMBER>`  | `-f`  | Number of frames (for animations) | 1          |
+| `--bg <COLOR>`       |       | Background color (RGB)            | sky blue   |
+
 
 ### Available Scenes
 
@@ -642,14 +643,14 @@ cargo run --release -- --scene 1 --bg "0.1 0.1 0.1" --width 800 --height 600
 ## scene_02
 
 lighter:
-cargo run --release -- --scene 2 --width 800 --height 600 // default background: light blue
+cargo run --release -- --scene 2 --width 800 --height 600 // default background: sky blue
 
 darker:
 cargo run --release -- --scene 2 --bg "0.1 0.1 0.2" --width 800 --height 600
 
 ## scene_03
 lighter:
-cargo run --release -- --scene 3 --width 800 --height 600 // default background: light blue
+cargo run --release -- --scene 3 --width 800 --height 600 // default background: sky blue
 
 darker:
 cargo run --release -- --scene 3 --bg "0.1 0.1 0.2" --width 800 --height 600

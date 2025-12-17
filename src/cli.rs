@@ -19,10 +19,6 @@ pub struct Config {
     #[arg(short = 's', long = "scene", default_value_t = 0)]
     pub scene: usize,
 
-    /// Number of frames to render (useful for animations)
-    #[arg(short = 'f', long = "frames", default_value_t = 1)]
-    pub num_frames: usize,
-
     /// Image width in pixels (default: 800)
     #[arg(short = 'w', long = "width")]
     pub width: Option<i32>,
@@ -49,8 +45,7 @@ pub struct Config {
 
     /// Output filename
     /// 
-    /// For single frame: exact filename (e.g., "output.ppm")
-    /// For multiple frames: base filename, frame number will be appended (e.g., "frame" -> "frame_000.ppm")
+    /// exact filename (e.g., "output.ppm")
     #[arg(short = 'o', long = "output")]
     pub output: Option<String>,
 

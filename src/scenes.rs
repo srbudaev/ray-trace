@@ -1,6 +1,6 @@
 use std::rc::Rc;
 use crate::core::{Color, common};
-use crate::core::material::{Material, NumberType, LambertianNoise, Metal, Striped, Lambertian};
+use crate::core::material::{Material, NumberType, LambertianNoise, Solid, Striped, Lambertian};
 use crate::shapes::{Sphere, Plane, Cylinder, Cuboid};
 use crate::math::vec3::{Point3, Vec3};
 use crate::scene::Scene;
@@ -17,21 +17,13 @@ pub fn random_scene() -> Scene {
         ground_material,
     )));
 
-    // Add a small cube to the scene
-   // let box_material = Rc::new(Lambertian::new(Color::new(0.4, 0.2, 0.1)));
-   // world.add(Box::new(Cuboid::new(
-   //     Point3::new(-1.5, 0.0, 0.5),
-   //     Point3::new(-1.1, 0.4, 0.9),
-    //    box_material,
-   // )));
-
     let mut count_balls = 0;
     let nbr_of_balls = 16;
-    for a in -1..3 {
-        for b in -1..4 {
+    for a in 0..6 {
+        for b in 0..3 {
             if count_balls <= nbr_of_balls {
                 let center = Point3::new(
-                    a as f64 + 0.7 * common::random_double(),
+                    a as f64 -0.5 + 0.7 * common::random_double(),
                     0.2,
                     b as f64 + 0.7 * common::random_double(),
                 );
@@ -47,13 +39,13 @@ pub fn random_scene() -> Scene {
                     NumberType::Circle
                 };
 
-                let sphere_material: Rc<dyn Material> = if color.is_spots {
+                let billiard_material: Rc<dyn Material> = if color.is_spots {
                     Rc::new(Striped::new(color.color, fuzz, center, number_type))
                 } else {
-                    Rc::new(Metal::new(color.color, fuzz, center, spot_dir, number_type))
+                    Rc::new(Solid::new(color.color, fuzz, center, spot_dir, number_type))
                 };
 
-                scene.add_object(Box::new(Sphere::new(center, 0.2, sphere_material)));
+                scene.add_object(Box::new(Sphere::new(center, 0.2, billiard_material)));
 
                 count_balls += 1;
             }
@@ -61,14 +53,14 @@ pub fn random_scene() -> Scene {
     }
     
     // Set camera for random scene
-    let lookat = Point3::new(0.85, 0.2, 1.35);
+    let lookat = Point3::new(2.0, 0.0, 1.5);
     scene.set_camera(
-        Point3::new(13.0, 2.0, 3.0),
+        Point3::new(8.0, 0.85, -0.5),
         lookat,
         Vec3::new(0.0, 1.0, 0.0),
         20.0,
-        0.02,
-        6.0,
+        0.04,
+        3.0,
     );
     
     // Add light
@@ -77,7 +69,20 @@ pub fn random_scene() -> Scene {
         Color::new(1.0, 0.85, 0.6),
         0.75,
     ));
+
+        // Add light
+    scene.add_light(crate::core::PointLight::new(
+        Point3::new(0.0, 1.0, 1.0),
+        Color::new(1.0, 0.85, 0.6),
+        0.75,
+    ));
     
+        // Add light
+    scene.add_light(crate::core::PointLight::new(
+        Point3::new(2.0, 3.0, 10.0),
+        Color::new(1.0, 0.85, 0.6),
+        0.75,
+    ));
     scene
 }
 
@@ -145,19 +150,19 @@ pub fn scene_plane_cube() -> Scene {
 
     // Set camera
     scene.set_camera(
-        Point3::new(5.0, 5.0, 5.0),
+        Point3::new(4.0, 2.0, 4.0),
         Point3::new(0.0, 0.5, 0.0),
         Vec3::new(0.0, 1.0, 0.0),
         20.0,
-        0.02,
-        6.0,
+        0.03,
+        4.0,
     );
 
     // Add light with lower brightness for scene 2
     scene.add_light(crate::core::PointLight::new(
         Point3::new(0.0, 5.0, 4.0),
         Color::new(2.0, 1.85, 1.6),
-        0.2,  // Lower brightness
+        0.75,  // Lower brightness
     ));
 
     scene
@@ -175,36 +180,36 @@ pub fn scene_all_objects() -> Scene {
         ground_material,
     )));
 
-    // Sphere - слева, ближе к камере
+    // Sphere 
     let sphere_material = Rc::new(Lambertian::new(Color::new(0.8, 0.2, 0.2))); // Red
     scene.add_object(Box::new(Sphere::new(
-        Point3::new(-1.5, 0.6, 0.0),  // Выше и ближе
-        0.6,                           // Больше размер
+        Point3::new(-1.5, 0.6, 0.0),  
+        0.6,                          
         sphere_material,
     )));
 
-    // Cube - в центре
+    // Cube 
     let cube_material = Rc::new(Lambertian::new(Color::new(0.2, 0.2, 0.8))); // Blue
     scene.add_object(Box::new(Cuboid::new(
-        Point3::new(-0.6, 0.0, -0.6),  // Центр смещен немного назад
-        Point3::new(0.6, 1.2, 0.6),    // Выше куб
+        Point3::new(-0.6, 0.0, -0.6),  
+        Point3::new(0.6, 1.2, 0.6),    
         cube_material,
     )));
 
-    // Cylinder - справа, дальше
+    // Cylinder 
     let cylinder_material = Rc::new(Lambertian::new(Color::new(0.2, 0.8, 0.2))); // Green
     scene.add_object(Box::new(Cylinder::new(
-        Point3::new(1.5, 0.0, 0.0),    // Справа
+        Point3::new(1.5, 0.0, 0.0),  
         Vec3::new(0.0, 1.0, 0.0),
-        0.6,                            // Больше радиус
-        1.8,                            // Выше
+        0.6,                            
+        1.8,                          
         cylinder_material,
     )));
 
     // Set camera - wider FOV for all objects
     scene.set_camera(
         Point3::new(4.0, 2.5, 4.0),
-        Point3::new(0.0, 0.6, 0.0),
+        Point3::new(0.5, 0.6, 0.0),
         Vec3::new(0.0, 1.0, 0.0),
         30.0,  // Wider FOV
         0.02,
@@ -237,4 +242,6 @@ pub fn scene_all_objects_alt_camera() -> Scene {
     
     scene
 }
+
+
 

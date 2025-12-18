@@ -30,9 +30,9 @@ impl RenderSettings {
     /// Create render settings with default values (800x600, 200 samples, depth 100)
     pub fn default() -> Self {
         Self {
-            width: 800,
-            height: 600,
-            samples_per_pixel: 32,
+            width: 200,
+            height: 150,
+            samples_per_pixel: 200,
             max_depth: 10,
         }
     }
@@ -61,6 +61,7 @@ pub struct Scene {
     pub render_settings: RenderSettings,
     pub lights: Vec<PointLight>,
     pub objects: HittableList,
+    pub bg_color: Color,
 }
 
 impl Scene {
@@ -71,7 +72,7 @@ impl Scene {
             lookat: Point3::new(0.0, 0.0, -1.0),
             vup: Vec3::new(0.0, 1.0, 0.0),
             vfov: 20.0,
-            aperture: 0.02,
+            aperture: 0.01,
             focus_dist: 6.0,
         };
         let render_settings = RenderSettings::default();
@@ -91,6 +92,7 @@ impl Scene {
             render_settings,
             lights: Vec::new(),
             objects: HittableList::new(),
+            bg_color: Color::new(0.5, 0.7, 1.0),
         }
     }
 
@@ -182,6 +184,11 @@ impl Scene {
         &self.render_settings
     }
 
+    /// Set background color
+    pub fn set_background(&mut self, color: Color) {
+        self.bg_color = color;
+    }
+
     /// Render the scene to a PPM file
     pub fn render_to_file(&self, filename: &str) -> std::io::Result<()> {
         let settings = self.render_settings();
@@ -210,7 +217,7 @@ impl Scene {
                     let u = (i as f64 + crate::core::common::random_double()) / (width - 1) as f64;
                     let v = (j as f64 + crate::core::common::random_double()) / (height - 1) as f64;
                     let r = self.camera.get_ray(u, v);
-                    pixel_color += ray_color(&r, self.objects(), self.lights(), max_depth);
+                    pixel_color += ray_color(&r, self.objects(), self.lights(), max_depth, self.bg_color);
                 }
                 write_color(&mut writer, pixel_color, samples_per_pixel);
             }

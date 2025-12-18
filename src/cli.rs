@@ -19,10 +19,6 @@ pub struct Config {
     #[arg(short = 's', long = "scene", default_value_t = 0)]
     pub scene: usize,
 
-    /// Number of frames to render (useful for animations)
-    #[arg(short = 'f', long = "frames", default_value_t = 1)]
-    pub num_frames: usize,
-
     /// Image width in pixels (default: 800)
     #[arg(short = 'w', long = "width")]
     pub width: Option<i32>,
@@ -49,10 +45,38 @@ pub struct Config {
 
     /// Output filename
     /// 
-    /// For single frame: exact filename (e.g., "output.ppm")
-    /// For multiple frames: base filename, frame number will be appended (e.g., "frame" -> "frame_000.ppm")
+    /// exact filename (e.g., "output.ppm")
     #[arg(short = 'o', long = "output")]
     pub output: Option<String>,
+
+    /// Background color (RGB values 0.0-1.0, space-separated)
+    /// 
+    /// Example: --bg 0.5 0.7 1.0 for sky blue
+    /// Default: sky blue (0.5, 0.7, 1.0)
+    #[arg(long = "bg", value_parser = parse_color, default_value = "0.5 0.7 1.0")]
+    pub bg_color: (f64, f64, f64),
+
+}
+
+/// Parse a color string in format "r g b" where each component is 0.0-1.0
+fn parse_color(s: &str) -> Result<(f64, f64, f64), String> {
+    let parts: Vec<&str> = s.split_whitespace().collect();
+    if parts.len() != 3 {
+        return Err(format!("Expected 3 space-separated values, got {}. Example: 0.5 0.7 1.0", parts.len()));
+    }
+
+    let r = parts[0].parse::<f64>()
+        .map_err(|e| format!("Invalid red component: {}", e))?;
+    let g = parts[1].parse::<f64>()
+        .map_err(|e| format!("Invalid green component: {}", e))?;
+    let b = parts[2].parse::<f64>()
+        .map_err(|e| format!("Invalid blue component: {}", e))?;
+
+    if !(0.0..=1.0).contains(&r) || !(0.0..=1.0).contains(&g) || !(0.0..=1.0).contains(&b) {
+        return Err("Color components must be between 0.0 and 1.0".to_string());
+    }
+
+    Ok((r, g, b))
 }
 
 impl Config {
